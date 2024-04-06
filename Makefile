@@ -1,6 +1,9 @@
 VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
-TARGETOS=$(shell uname -os | tr "[:upper:]" "[:lower:]")
-ARH=${shell uname -m}
+TARGETOS=$(shell uname -s | tr "[:upper:]" "[:lower:]")
+TARGETARH=${shell uname -m}
+APP=$(shell basename $(shell git remote get-url origin)| cut -d '.' -f1)
+REGISTRY=serhiimoiseiev
+
 
 format:
 	gofmt -s -w ./
@@ -11,9 +14,29 @@ lint:
 test:
 	go test -v
 
-build:
-	CGO_ENABLED=0 GOOS=${TARGETOS} GOARH=${ARH} go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
+get:
+	go get
+
+build: format get
+	CGO_ENABLED=0 GOOS=${TARGETOS} GOARH=${TARGETARH} go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
+
+linux:
+	CGO_ENABLED=0 GOOS=linux GOARH=amd64 go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
+
+macos:
+	CGO_ENABLED=0 GOOS=darwin GOARH=amd64 go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
+
+windows:
+	CGO_ENABLED=0 GOOS=windows GOARH=amd64 go build -v -o kbot.exe -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
+
+arm:
+	CGO_ENABLED=0 GOOS=darwin GOARH=arm64 go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
+
+image:
+	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
+
+push:
+	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
 
 clean:
-	rm -rf kbot
-
+	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
