@@ -1,7 +1,7 @@
 #VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HEAD)
 #TARGETOS=$(shell uname -s | tr "[:upper:]" "[:lower:]")
 #TARGETARH=${shell uname -m}
-VERSION=1.0.3
+VERSION=1.0.4
 TARGETOS=linux
 TARGETARH=amd64
 APP=$(shell basename $(shell git remote get-url origin)| cut -d '.' -f1)
@@ -36,7 +36,7 @@ arm:
 	CGO_ENABLED=0 GOOS=darwin GOARH=arm64 go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
 
 image:
-	docker build . -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
+	docker build . --platform=linux/amd64 -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
 
 push:
 	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
