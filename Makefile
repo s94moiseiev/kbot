@@ -42,7 +42,7 @@ push:
 	docker push ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
 
 ghcr:
-    docker push ghcr.io/${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
+    docker push ghcr.io/s94moiseiev/${APP}:${VERSION}-${TARGETARH}
 
 clean:
 	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
