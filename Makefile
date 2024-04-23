@@ -5,7 +5,7 @@ VERSION=$(shell git describe --tags --abbrev=0)-$(shell git rev-parse --short HE
 TARGETOS=linux
 TARGETARH=amd64
 APP=$(shell basename $(shell git remote get-url origin)| cut -d '.' -f1)
-REGISTRY=serhiimoiseiev
+#REGISTRY=serhiimoiseiev
 
 
 format:
