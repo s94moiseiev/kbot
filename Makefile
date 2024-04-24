@@ -36,10 +36,10 @@ arm:
 	CGO_ENABLED=0 GOOS=darwin GOARH=arm64 go build -v -o kbot -ldflags "-X="github.com/s94moiseiev/kbot/cmd.appVersion=${VERSION}
 
 image:
-	docker build . --platform=linux/amd64 -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
+	docker build . --platform=linux/amd64 -t ${APP}:${VERSION}-${TARGETARH}
 
 push:
-	docker push ghcr.io/${REGISTRY}/${APP}/${APP}:${VERSION}-${TARGETARH}
+	docker push ghcr.io/${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
 
 clean:
 	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
