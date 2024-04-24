@@ -3,8 +3,10 @@
 # Declare variables to be passed into your templates.
 replicaCount: 1
 image:
-  repository: "serhiimoiseiev"
+  registry: "ghcr.io"
+  repository: "s94moiseiev/kbot"
   tag: "v1.0.5-5b3a2ab"
+  os: linux
   arch: amd64
 secret:
   name: "kbot"

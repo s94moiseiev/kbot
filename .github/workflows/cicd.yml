@@ -1,6 +1,9 @@
 name: KBOT-CICD
 
-on: push
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   ci:
@@ -39,6 +42,8 @@ jobs:
         fetch-depth: 0
     - run: echo "VERSION=$(git describe --tags --abbrev=0)-$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
+    - run: git checkout develop
+
     - uses: mikefarah/yq@master
       with:
         cmd: yq -i '.image.tag=strenv(VERSION)' helm/values.yaml
@@ -47,4 +52,4 @@ jobs:
         git config user.name github-actions
         git config user.email github-actions@github.com
         git commit -am "update version $VERSION"
-        git push
+        git push develop
