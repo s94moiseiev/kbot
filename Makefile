@@ -39,7 +39,7 @@ image:
 	docker build . --platform=linux/amd64 -t ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
 
 push:
-	docker push ghcr.io/${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
+	docker push ghcr.io/${REGISTRY}/${APP}/${APP}:${VERSION}-${TARGETARH}
 
 clean:
 	docker rmi ${REGISTRY}/${APP}:${VERSION}-${TARGETARH}
