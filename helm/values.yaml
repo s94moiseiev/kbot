@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: "serhiimoiseiev"
-  tag: "v1.0.5-5b3a2ab"
+  tag: "v1.0.5-40346db"
   arch: amd64
 secret:
   name: "kbot"
