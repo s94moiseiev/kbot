@@ -1,6 +1,6 @@
 pipeline {
     agent any
-    
+
     parameters {
         choice(name: 'OS', choices: ['linux', 'darwin', 'windows', 'all'], description: 'Pick OS')
         choice(name: 'ARCH', choices: ['amd64', 'arm64', 'all'], description: 'Pick ARCH')
@@ -10,8 +10,6 @@ pipeline {
         REPO = 'https://github.com/s94moiseiev/kbot'
         BRANCH = 'main'
         REGISTRY = 'serhiimoiseiev'
-        TARGETOS = ${params.OS}
-        TARGETARH = ${params.ARCH}
     }
 
     stages {
@@ -49,6 +47,9 @@ pipeline {
         }
         stage("push") {
             steps {
+                env:
+                TARGETOS = "${params.OS}"
+                TARGETARH = "${params.ARCH}"
                 script {
                     docker.withRegistry('', 'dockerhub') {
                     sh 'make push'
