@@ -3,7 +3,9 @@ pipeline {
     environment {
         REPO = 'https://github.com/s94moiseiev/kbot'
         BRANCH = 'main'
-
+        REGISTRY = 'serhiimoiseiev'
+        TARGETOS = '${params.OS}'
+        TARGETARH = '${params.ARCH}'
     }
 
     parameters {
