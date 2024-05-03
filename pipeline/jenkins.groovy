@@ -47,9 +47,6 @@ pipeline {
         }
         stage("push") {
             steps {
-                env:
-                TARGETOS = "${params.OS}"
-                TARGETARH = "${params.ARCH}"
                 script {
                     docker.withRegistry('', 'dockerhub') {
                     sh 'make push'
