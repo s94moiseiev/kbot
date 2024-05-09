@@ -1,1 +1,3 @@
 *.tgz
+/tf/.terraform
+/tf/.terraform.lock.hcl

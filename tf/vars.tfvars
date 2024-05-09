@@ -1,0 +1,2 @@
+GOOGLE_REGION = "us-east1"
+GKE_NUM_NODES = 3
