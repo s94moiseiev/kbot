@@ -14,3 +14,15 @@ variable "GKE_NUM_NODES" {
   default     = 2
   description = "node pool"
 }
+
+variable "GKE_CLUSTER_NAME" {
+  type        = string
+  default     = "my-demo"
+  description = "GKE cluster name"
+}
+
+variable "GKE_POOL_NAME" {
+  type        = string
+  default     = "my-demo"
+  description = "GKE pool name"
+}
