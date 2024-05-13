@@ -4,7 +4,7 @@
 replicaCount: 1
 image:
   repository: " ghcr.io/s94moiseiev"
-  tag: "v1.0.5-20f6aec"
+  tag: "v1.0.5-69e116c"
   arch: amd64
 secret:
   name: "kbot"
