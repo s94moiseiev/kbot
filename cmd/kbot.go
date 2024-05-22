@@ -68,7 +68,7 @@ func pmetrics(ctx context.Context, payload string) {
 	meter := otel.GetMeterProvider().Meter("kbot_hello_counter")
 
 	// Get or create an Int64Counter instrument with the name "kbot_light_signal_<payload>"
-	counter, _ := meter.Int64Counter(fmt.Sprintf("kbot_hello", payload))
+	counter, _ := meter.Int64Counter(fmt.Sprintf("kbot_hello_%s", payload))
 
 	// Add a value of 1 to the Int64Counter
 	counter.Add(ctx, 1)
