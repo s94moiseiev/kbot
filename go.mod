@@ -1,6 +1,8 @@
 module github.com/s94moiseiev/kbot
 
-go 1.19
+go 1.21
+
+toolchain go1.22.1
 
 
 require (
