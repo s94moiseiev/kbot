@@ -4,19 +4,65 @@ Copyright © 2024 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
 	"time"
 
 	"github.com/spf13/cobra"
+
+	_ "github.com/hirosassa/zerodriver"
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
+	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
+	"go.opentelemetry.io/otel/sdk/resource"
+	semconv "go.opentelemetry.io/otel/semconv/v1.12.0"
 	telebot "gopkg.in/telebot.v3"
 )
 
 var (
 	//TeleToken bot
 	TeleToken = os.Getenv("TELE_TOKEN")
+	// MetricsHost exporter host:port
+	MetricsHost = os.Getenv("METRICS_HOST")
 )
+
+func initMetrics(ctx context.Context) {
+
+	// Create a new OTLP Metric gRPC exporter with the specified endpoint and options
+	// Описуємо exporter otlp grpc що посилається на змінну вказану в дужках MetricsHost.
+	exporter, _ := otlpmetricgrpc.New(
+		ctx,
+		// Це адреса на якій буде доступний Collector Metric. Також там буде вказано і порт:
+		otlpmetricgrpc.WithEndpoint(MetricsHost),
+		otlpmetricgrpc.WithInsecure(),
+	)
+
+	// Define the resource with attributes that are common to all metrics.
+	// labels/tags/resources that are common to all metrics.
+	// початковий ресурс з атрибутами за замовчуванням для всіх метрик
+	resource := resource.NewWithAttributes(
+		semconv.SchemaURL,
+		// додамо префікс імені сервісу та версії. Це дозволить нам відокремити метрики від метрик інших сервісів
+		semconv.ServiceNameKey.String(fmt.Sprintf("kbot_%s", appVersion)),
+	)
+
+	// Create a new MeterProvider with the specified resource and reader
+	// MeterProvider - це інтерфейс для створення метрик.
+	// Він приймає resource та опції
+	mp := sdkmetric.NewMeterProvider(
+		sdkmetric.WithResource(resource),
+		sdkmetric.WithReader(
+			// collects and exports metric data every 10 seconds.
+			// наприклад збирати та експортувати метрики кожні 10 секунд
+			sdkmetric.NewPeriodicReader(exporter, sdkmetric.WithInterval(10*time.Second)),
+		),
+	)
+
+	// Set the global MeterProvider to the newly created MeterProvider
+	otel.SetMeterProvider(mp)
+}
 
 // kbotCmd represents the kbot command
 var kbotCmd = &cobra.Command{
