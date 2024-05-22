@@ -64,6 +64,17 @@ func initMetrics(ctx context.Context) {
 	otel.SetMeterProvider(mp)
 }
 
+func pmetrics(ctx context.Context, payload string) {
+	// Get the global MeterProvider and create a new Meter with the name "kbot_light_signal_counter"
+	meter := otel.GetMeterProvider().Meter("kbot_hello_counter")
+
+	// Get or create an Int64Counter instrument with the name "kbot_light_signal_<payload>"
+	counter, _ := meter.Int64Counter(fmt.Sprintf("kbot_hello", payload))
+
+	// Add a value of 1 to the Int64Counter
+	counter.Add(ctx, 1)
+}
+
 // kbotCmd represents the kbot command
 var kbotCmd = &cobra.Command{
 	Use:     "kbot",
@@ -77,7 +88,7 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		fmt.Printf("kbot %s called", appVersion)
+		logger := zerodriver.NewProductionLogger()
 
 		kbot, err := telebot.NewBot(telebot.Settings{
 			URL:    "",
@@ -86,8 +97,11 @@ to quickly create a Cobra application.`,
 		})
 
 		if err != nil {
-			log.Fatalf("Plaese check TELE_TOKEN env variable. %s", err)
+			logger.Fatal().Str("Error", err.Error()).Msg("Please check TELE_TOKEN")
 			return
+		} else {
+			logger.Info().Str("Version", appVersion).Msg("kbot started")
+
 		}
 
 		kbot.Handle("/start", func(m telebot.Context) error {
@@ -96,8 +110,10 @@ to quickly create a Cobra application.`,
 
 		kbot.Handle(telebot.OnText, func(m telebot.Context) error {
 
-			log.Print(m.Message().Payload, m.Text())
+			logger.Info().Str("Payload", m.Text()).Msg(m.Message().Payload)
+
 			payload := m.Text()
+			pmetrics(context.Background(), payload)
 
 			switch payload {
 			case "hello":
@@ -113,6 +129,8 @@ to quickly create a Cobra application.`,
 }
 
 func init() {
+	ctx := context.Background()
+	initMetrics(ctx)
 	rootCmd.AddCommand(kbotCmd)
 
 	// Here you will define your flags and configuration settings.
