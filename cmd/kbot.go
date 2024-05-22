@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	_ "github.com/hirosassa/zerodriver"
+	"github.com/hirosassa/zerodriver"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetricgrpc"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
