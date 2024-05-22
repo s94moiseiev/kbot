@@ -14,4 +14,4 @@ export TELE_TOKEN=<TOKEN>
 docker-compose up
 ```
 ## Demo
-[(https://github.com/s94moiseiev/kbot/blob/main/otel/img/loki.png "img1")
+[![](img1)](https://raw.githubusercontent.com/s94moiseiev/kbot/main/otel/img/prometeus.png)
