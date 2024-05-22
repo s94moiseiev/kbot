@@ -13,3 +13,5 @@ Sample configuration for Kbot that send logs to [OpenTelemetry Collector] and me
 export TELE_TOKEN=<TOKEN>
 docker-compose up
 ```
+## Demo
+[![img1](img1 "img1")](https://github.com/s94moiseiev/kbot/blob/main/otel/img/loki.png "img1")
