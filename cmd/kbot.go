@@ -24,8 +24,7 @@ var (
 	//TeleToken bot
 	TeleToken = os.Getenv("TELE_TOKEN")
 	// MetricsHost exporter host:port
-	//MetricsHost = os.Getenv("METRICS_HOST")
-	MetricsHost = "collector:4317"
+	MetricsHost = os.Getenv("METRICS_HOST")
 )
 
 func initMetrics(ctx context.Context) {

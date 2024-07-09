@@ -46,4 +46,6 @@ spec:
               secretKeyRef:
                 key: {{ .Values.secret.key }}
                 name: {{ .Values.secret.name }}
+          - name: {{.Values.collector.name}}
+            value: {{ .Values.collector.values}}
  
