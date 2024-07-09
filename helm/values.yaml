@@ -10,5 +10,8 @@ secret:
   name: "kbot"
   env: "TELE_TOKEN"
   key: "token"
+env:
+  name: "METRICS_HOST"
+  value: "collector:4317"
 securityContext:
   privileged: true
